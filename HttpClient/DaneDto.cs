@@ -11,10 +11,10 @@ class DaneDto : IMethods
     private static HttpClient client = new HttpClient();
 
     private static List<Post> _posts = new List<Post>();
-    public static string url = "https://localhost:7294/api/Post";
+    public static string uri = "https://localhost:7294/api/Post";
     public static string GetAll(out int[] ids, out string[] titles, out string[] contents)
     {
-        var task = client.GetAsync(url);
+        var task = client.GetAsync(uri);
         task.Wait();
 
         if (task.IsCompleted)
@@ -58,7 +58,7 @@ class DaneDto : IMethods
 
     public string GetAll()
     {
-        var task = client.GetAsync(url);
+        var task = client.GetAsync(uri);
         task.Wait();
 
         if (task.IsCompleted)
@@ -91,7 +91,7 @@ class DaneDto : IMethods
 
     public string GetById(int id)
     {
-        var task = client.GetAsync($"{url}/{id}");
+        var task = client.GetAsync($"{uri}/{id}");
         task.Wait();
 
         if (task.IsCompleted)
@@ -115,11 +115,10 @@ class DaneDto : IMethods
 
     public string Post(NewPost newPost)
     {
-        GetAll();
         int lastId = _posts[_posts.Count() - 1].Id;
         Post post = new(lastId + 1, newPost.Title, newPost.Content);
 
-        var task = client.PostAsJsonAsync(url,post);
+        var task = client.PostAsJsonAsync(uri,post);
         task.Wait();
 
         if (task.IsCompleted && task.IsCompletedSuccessfully)
@@ -130,4 +129,39 @@ class DaneDto : IMethods
         throw new Exception($"{task}!=IsCompleted");
     }
 
+    public string Put(UpdatePost updatePost)
+    {
+        var checkpost = _posts.FirstOrDefault(x => x.Id == updatePost.Id);
+        bool logic = _posts.FirstOrDefault(x => x.Id == updatePost.Id) == null ? false:true;
+        if (logic)
+        {
+            //TODO dodaj zeby pojaiwl sie komunikat jesli sa powtorki!!!
+            Post post = new(updatePost.Id, checkpost.Title, updatePost.Content);
+            var task = client.PutAsJsonAsync(uri, post);
+            task.Wait();
+
+            if (task.IsCompleted && task.IsCompletedSuccessfully)
+            {
+                return $"Zmieniono:\n{checkpost} na:\n{post}";
+            }
+            throw new Exception($"{task}!=IsCompleted");
+        }
+        return "Nie ma takiego Id!";
+    }
+
+    public string Delete(int id)
+    {
+        bool logic = _posts.FirstOrDefault(x => x.Id == id) == null ? false : true;
+        if (logic)
+        {
+            var task = client.DeleteAsync($"{uri}/{id}");
+            task.Wait();
+
+            if(task.IsCompleted && task.IsCompletedSuccessfully)
+            {
+                return $"Usunieto post o id: {id}";
+            }
+        }
+        return "Nie ma takiego Id!";
+    }
 }

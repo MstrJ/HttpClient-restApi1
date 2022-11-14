@@ -8,23 +8,30 @@
 //}
 record Post(int Id, string Title, string Content);
 record NewPost(string Title, string Content);
-
+record UpdatePost(int Id, string Content);
 class Program
 {
     public static void Main()
     {
-        DaneDto Obj = new();
-
-        //Console.WriteLine(DaneDto.GetAll(out int[] ids, out string[] titles, out string[] contents));
+        DaneDto Dane = new();
+        Dane.GetAll();
+        //Console.WriteLine(Dane.GetAll(out int[] ids, out string[] titles, out string[] contents));
         //Console.WriteLine(contents[1]);
 
 
-        //Console.WriteLine(DaneDto.GetById(1));
-        //Console.WriteLine(Obj.GetAll());
+        //Console.WriteLine(Dane.GetById(1));
+        //Console.WriteLine(Dane.GetAll());
 
-        NewPost newPost = new("Dzien 10", "Co tamasdsadsadsad? ");
-        Console.WriteLine(Obj.Post(newPost));
+        //NewPost newPost = new("Dzien 17", "Dziala EZ? ");
+        //Console.WriteLine(Dane.Post(newPost));
 
-        //Console.WriteLine(Obj.GetAll());
+        //Console.WriteLine(Dane.GetAll());
+
+        UpdatePost updatePost = new(13, "Siema eniu");
+        Console.WriteLine(Dane.Put(updatePost));
+
+
+
+        Console.WriteLine(Dane.Delete(2));
     }
 }
