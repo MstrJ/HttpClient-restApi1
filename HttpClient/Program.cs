@@ -13,8 +13,11 @@ class Program
 {
     public static void Main()
     {
-        Console.WriteLine(DaneDto.GetAll(out int[] ids, out string[] titles, out string[] contents));
+        //Console.WriteLine(DaneDto.GetAll(out int[] ids, out string[] titles, out string[] contents));
+        //Console.WriteLine(contents[1]);
 
-        Console.WriteLine(contents[1]);
+        //Console.WriteLine(DaneDto.GetAll());
+
+        Console.WriteLine(DaneDto.GetById(1));
     }
 }
