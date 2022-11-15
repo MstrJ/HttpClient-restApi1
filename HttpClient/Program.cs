@@ -52,7 +52,7 @@ class Program
             string title, content;
             if(n == 1)
             {
-                Console.WriteLine("Give item...");
+                Console.WriteLine("Give sort by...");
                 Console.WriteLine("1. Id");
                 Console.WriteLine("2. Title");
                 Console.WriteLine("3. Content");
@@ -72,7 +72,7 @@ class Program
                 Console.WriteLine("Give direction...");
                 Console.WriteLine("1. Ascending");
                 Console.WriteLine("2. Descending");
-                Direction direction = int.Parse(Console.ReadLine()) == 1 ? Direction.Ascending: Direction.Descending;
+                Direction direction = int.Parse(Console.ReadLine()) == 2 ?Direction.Descending:Direction.Ascending;
 
                 Console.WriteLine(Dane.GetAll(direction,directionBy));
             }

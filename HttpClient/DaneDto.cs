@@ -14,7 +14,7 @@ class DaneDto : IMethods
 
     public DaneDto() {GetAll(); }
 
-    public string GetAll(Direction? direction = Direction.Ascending, DirectionBy? directionBy = DirectionBy.Content)
+    public string GetAll(Direction? direction = Direction.Ascending, DirectionBy? directionBy = DirectionBy.Id)
     {
         var task = client.GetAsync(uri);
         task.Wait();
