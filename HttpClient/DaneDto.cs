@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 class DaneDto : IMethods
 {
+    public enum Direction {ascending,descending}
     private static HttpClient client = new HttpClient();
-
     private static List<Post> _posts = new List<Post>();
     private static string uri = "https://localhost:7294/api/Post";
 
@@ -48,6 +48,14 @@ class DaneDto : IMethods
         throw new Exception($"{task}!=IsCompleted");
     }
 
+    //public string GetAll(Direction kierunek)
+    //{
+    //    //var asc = _posts.OrderBy(i => i.Id);
+    //    var des = _posts.OrderByDescending(i => i.Id);
+    //    _posts = des.ToList();
+    //    return GetAll();
+    //}
+
     public string GetById(int id)
     {
         bool logic = _posts.FirstOrDefault(x => x.Id == id) == null ? false : true;
@@ -74,23 +82,30 @@ class DaneDto : IMethods
 
             throw new Exception($"{task}!=IsCompleted");
         }
-        return "Nie ma takie Id!";
+        return "Nie ma takiego Id!";
     }
 
     public string Post(NewPost newPost)
     {
-        int lastId = _posts[_posts.Count() - 1].Id;
-        Post post = new(lastId + 1, newPost.Title, newPost.Content);
+        int lastId = _posts[_posts.Count() -1].Id;
+        Console.WriteLine(lastId);
+        //bool zawiera = true;
+        //while (zawiera)
+        //{
+        //    lastId++;
+        //    zawiera = _posts.FirstOrDefault(x => x.Id == lastId) == null ?false:true;
+        //}
+        Post post = new(lastId +1, newPost.Title, newPost.Content);
         bool p1 = _posts.FirstOrDefault(x => x.Title == post.Title) == null && _posts.FirstOrDefault(x => x.Content == post.Content) == null ? true : false;
         if (p1)
         {
-        var task = client.PostAsJsonAsync(uri,post);
-        task.Wait();
+            var task = client.PostAsJsonAsync(uri,newPost);
+            task.Wait();    
 
-        if (task.IsCompleted && task.IsCompletedSuccessfully)
-        {
-            return $"Dodano: {post}";
-        }
+            if (task.IsCompleted && task.IsCompletedSuccessfully)
+            {
+                return $"Dodano: {post}";
+            }
 
         throw new Exception($"{task}!=IsCompleted");
 
