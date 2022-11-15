@@ -1,6 +1,8 @@
 ﻿record Post(int Id, string Title, string Content);
 record NewPost(string Title, string Content);
 record UpdatePost(int Id, string Content);
+enum Direction { Ascending, Descending }
+enum DirectionBy { Id,Title,Content }
 class Program
 {
     public static void Main()
@@ -50,7 +52,29 @@ class Program
             string title, content;
             if(n == 1)
             {
-                Console.WriteLine(Dane.GetAll());
+                Console.WriteLine("Give item...");
+                Console.WriteLine("1. Id");
+                Console.WriteLine("2. Title");
+                Console.WriteLine("3. Content");
+                int n2 = int.Parse(Console.ReadLine());
+                DirectionBy directionBy = DirectionBy.Id;
+                if(n2 == 1)
+                {}
+                else if(n2 == 2)
+                {
+                    directionBy = DirectionBy.Title;
+                }
+                else if(n2 == 3)
+                {
+                    directionBy = DirectionBy.Content;
+                }
+
+                Console.WriteLine("Give direction...");
+                Console.WriteLine("1. Ascending");
+                Console.WriteLine("2. Descending");
+                Direction direction = int.Parse(Console.ReadLine()) == 1 ? Direction.Ascending: Direction.Descending;
+
+                Console.WriteLine(Dane.GetAll(direction,directionBy));
             }
             else if(n == 2)
             {

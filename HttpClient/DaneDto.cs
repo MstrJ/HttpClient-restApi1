@@ -8,14 +8,13 @@ using System.Threading.Tasks;
 
 class DaneDto : IMethods
 {
-    public enum Direction {ascending,descending}
     private static HttpClient client = new HttpClient();
     private static List<Post> _posts = new List<Post>();
     private static string uri = "https://localhost:7294/api/Post";
 
     public DaneDto() {GetAll(); }
 
-    public string GetAll()
+    public string GetAll(Direction? direction = Direction.Ascending, DirectionBy? directionBy = DirectionBy.Content)
     {
         var task = client.GetAsync(uri);
         task.Wait();
@@ -34,10 +33,24 @@ class DaneDto : IMethods
                     Post post = new(info[i].Id, info[i].Title, info[i].Content);
                     _posts.Add(post);
                 }
+                //var asc = _posts.OrderBy(i => i.Id);
+                //var des = _posts.OrderByDescending(i => i.Id);
+                //_posts = des.ToList();
+                //return GetAll();.
 
-                //_posts = _posts.OrderBy(i => i.Id).ToList();
-
-                List<Post> SortedList = _posts.OrderBy(x => x.Id).ToList();
+                List<Post> SortedList = new List<Post>();
+                if (directionBy.ToString().Equals("Id"))
+                {
+                    SortedList = direction.Equals(Direction.Ascending) ? _posts.OrderBy(x => x.Id).ToList() : _posts.OrderByDescending(x => x.Id).ToList();
+                }                
+                else if (directionBy.ToString().Equals("Title"))
+                {
+                    SortedList = direction.Equals(Direction.Ascending) ? _posts.OrderBy(x => x.Title).ToList() : _posts.OrderByDescending(x => x.Title).ToList();
+                }                
+                else if (directionBy.ToString().Equals("Content"))
+                {
+                    SortedList = direction.Equals(Direction.Ascending) ? _posts.OrderBy(x => x.Content).ToList() : _posts.OrderByDescending(x => x.Content).ToList();
+                }
                 _posts = SortedList;
                 Console.WriteLine("------------testing--------------\n");
                 string wszystko = "";
@@ -54,13 +67,6 @@ class DaneDto : IMethods
 
         throw new Exception($"{task}!=IsCompleted");
     }
-    //public string GetAll(Direction kierunek)
-    //{
-    //    //var asc = _posts.OrderBy(i => i.Id);
-    //    var des = _posts.OrderByDescending(i => i.Id);
-    //    _posts = des.ToList();
-    //    return GetAll();
-    //}
 
 
     public string GetById(int id)
