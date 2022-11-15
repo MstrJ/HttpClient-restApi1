@@ -11,7 +11,9 @@ class DaneDto : IMethods
     private static HttpClient client = new HttpClient();
 
     private static List<Post> _posts = new List<Post>();
-    public static string uri = "https://localhost:7294/api/Post";
+    private static string uri = "https://localhost:7294/api/Post";
+
+    public DaneDto() {GetAll(); }
 
     public string GetAll()
     {
@@ -79,7 +81,9 @@ class DaneDto : IMethods
     {
         int lastId = _posts[_posts.Count() - 1].Id;
         Post post = new(lastId + 1, newPost.Title, newPost.Content);
-
+        bool p1 = _posts.FirstOrDefault(x => x.Title == post.Title) == null && _posts.FirstOrDefault(x => x.Content == post.Content) == null ? true : false;
+        if (p1)
+        {
         var task = client.PostAsJsonAsync(uri,post);
         task.Wait();
 
@@ -89,6 +93,9 @@ class DaneDto : IMethods
         }
 
         throw new Exception($"{task}!=IsCompleted");
+
+        }
+        return "Juz znajduje sie w postach taki wpis!";
     }
 
     public string Put(UpdatePost updatePost)
@@ -97,7 +104,6 @@ class DaneDto : IMethods
         bool logic = _posts.FirstOrDefault(x => x.Id == updatePost.Id) == null ? false:true;
         if (logic)
         {
-            //TODO dodaj zeby pojaiwl sie komunikat jesli sa powtorki!!!
             Post post = new(updatePost.Id, checkpost.Title, updatePost.Content);
             var task = client.PutAsJsonAsync(uri, post);
             task.Wait();
