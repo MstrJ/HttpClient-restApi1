@@ -38,6 +38,7 @@ class DaneDto : IMethods
                 //_posts = des.ToList();
                 //return GetAll();.
 
+                
                 List<Post> SortedList = new List<Post>();
                 if (directionBy.ToString().Equals("Id"))
                 {
@@ -51,8 +52,10 @@ class DaneDto : IMethods
                 {
                     SortedList = direction.Equals(Direction.Ascending) ? _posts.OrderBy(x => x.Content).ToList() : _posts.OrderByDescending(x => x.Content).ToList();
                 }
+                //var a = directionBy;
+                //SortedList = direction.Equals(Direction.Ascending) ? _posts.OrderBy(a => a).ToList() : _posts.OrderByDescending(x => x.Id).ToList();
+
                 _posts = SortedList;
-                Console.WriteLine("------------testing--------------\n");
                 string wszystko = "";
                 for (int i = 0; i < info.Count(); i++)
                 {
