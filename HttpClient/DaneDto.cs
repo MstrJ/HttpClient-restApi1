@@ -28,18 +28,25 @@ class DaneDto : IMethods
                 var message = result.Content.ReadAsStringAsync().Result;
                 List<Post> info = JsonConvert.DeserializeObject<List<Post>>(message);
 
-                string[] listaInfo = new string[info.Count()];
-                string wszystko = "";
-
+                _posts.Clear();
                 for (int i = 0; i < info.Count(); i++)
                 {
-                    var items = $"Id: {info[i].Id}\tTitle: {info[i].Title}\tContent: {info[i].Content}";
-                    listaInfo[i] = items;
-                    wszystko += $"{listaInfo[i]}\n";
-
                     Post post = new(info[i].Id, info[i].Title, info[i].Content);
                     _posts.Add(post);
                 }
+
+                //_posts = _posts.OrderBy(i => i.Id).ToList();
+
+                List<Post> SortedList = _posts.OrderBy(x => x.Id).ToList();
+                _posts = SortedList;
+                Console.WriteLine("------------testing--------------\n");
+                string wszystko = "";
+                for (int i = 0; i < info.Count(); i++)
+                {
+                    var items = $"Id: {_posts[i].Id}\tTitle: {_posts[i].Title}\tContent: {_posts[i].Content}";
+                    wszystko += $"{items}\n";
+                }
+
 
                 return wszystko;
             }
@@ -47,7 +54,6 @@ class DaneDto : IMethods
 
         throw new Exception($"{task}!=IsCompleted");
     }
-
     //public string GetAll(Direction kierunek)
     //{
     //    //var asc = _posts.OrderBy(i => i.Id);
@@ -55,6 +61,7 @@ class DaneDto : IMethods
     //    _posts = des.ToList();
     //    return GetAll();
     //}
+
 
     public string GetById(int id)
     {

@@ -9,7 +9,6 @@ class Program
 
 
         //Console.WriteLine(Dane.GetAll());
-        Console.WriteLine(Dane.GetAll());
 
         /* */
 
