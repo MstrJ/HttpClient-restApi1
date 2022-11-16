@@ -10,9 +10,13 @@ class DaneDto : IMethods
 {
     private static HttpClient client = new HttpClient();
     private static List<Post> _posts = new List<Post>();
-    private static string uri = "https://localhost:7294/api/Post";
-
-    public DaneDto() {GetAll(); }
+    private string uri = "https://localhost:7294/api/Post";
+    private int _postCount;
+    public DaneDto() 
+    {
+        GetAll();
+        _postCount = _posts.Count();
+    }
 
     public string GetAll(Direction? direction = Direction.Ascending, DirectionBy? directionBy = DirectionBy.Id)
     {
@@ -33,29 +37,28 @@ class DaneDto : IMethods
                     Post post = new(info[i].Id, info[i].Title, info[i].Content);
                     _posts.Add(post);
                 }
-                //var asc = _posts.OrderBy(i => i.Id);
-                //var des = _posts.OrderByDescending(i => i.Id);
-                //_posts = des.ToList();
-                //return GetAll();.
+                IEnumerable<Post> SortedList = new List<Post>();
+                SortedList = directionBy switch
+                {
+                    DirectionBy.Id => direction.Equals(Direction.Ascending) ? _posts.OrderBy(x => x.Id) : _posts.OrderByDescending(x => x.Id),
+                    DirectionBy.Title =>  direction.Equals(Direction.Ascending) ? _posts.OrderBy(x => x.Title) : _posts.OrderByDescending(x => x.Title),
+                    DirectionBy.Content => direction.Equals(Direction.Ascending) ? _posts.OrderBy(x => x.Content) : _posts.OrderByDescending(x => x.Content)
+                };
 
-                
-                List<Post> SortedList = new List<Post>();
-                if (directionBy.ToString().Equals("Id"))
-                {
-                    SortedList = direction.Equals(Direction.Ascending) ? _posts.OrderBy(x => x.Id).ToList() : _posts.OrderByDescending(x => x.Id).ToList();
-                }                
-                else if (directionBy.ToString().Equals("Title"))
-                {
-                    SortedList = direction.Equals(Direction.Ascending) ? _posts.OrderBy(x => x.Title).ToList() : _posts.OrderByDescending(x => x.Title).ToList();
-                }                
-                else if (directionBy.ToString().Equals("Content"))
-                {
-                    SortedList = direction.Equals(Direction.Ascending) ? _posts.OrderBy(x => x.Content).ToList() : _posts.OrderByDescending(x => x.Content).ToList();
-                }
-                //var a = directionBy;
-                //SortedList = direction.Equals(Direction.Ascending) ? _posts.OrderBy(a => a).ToList() : _posts.OrderByDescending(x => x.Id).ToList();
+                //if (directionBy.ToString().Equals("Id"))
+                //{
+                //    SortedList = direction.Equals(Direction.Ascending) ? _posts.OrderBy(x => x.Id).ToList() : _posts.OrderByDescending(x => x.Id).ToList();
+                //}                
+                //else if (directionBy.ToString().Equals("Title"))
+                //{
+                //    SortedList = direction.Equals(Direction.Ascending) ? _posts.OrderBy(x => x.Title).ToList() : _posts.OrderByDescending(x => x.Title).ToList();
+                //}                
+                //else if (directionBy.ToString().Equals("Content"))
+                //{
+                //    SortedList = 
+                //}
 
-                _posts = SortedList;
+                _posts = SortedList.ToList();
                 string wszystko = "";
                 for (int i = 0; i < info.Count(); i++)
                 {
@@ -91,8 +94,8 @@ class DaneDto : IMethods
                     var Title = info.Title;
                     var Content = info.Content;
 
-                    string wszystko = $"Id: {id}\tTitle: {Title}\tContent: {Content}";
-                    return wszystko;
+
+                    return $"Id: {id}\tTitle: {Title}\tContent: {Content}";
                 }
             }
 
@@ -103,23 +106,18 @@ class DaneDto : IMethods
 
     public string Post(NewPost newPost)
     {
-        int lastId = _posts[_posts.Count() -1].Id;
-        Console.WriteLine(lastId);
-        //bool zawiera = true;
-        //while (zawiera)
-        //{
-        //    lastId++;
-        //    zawiera = _posts.FirstOrDefault(x => x.Id == lastId) == null ?false:true;
-        //}
-        Post post = new(lastId +1, newPost.Title, newPost.Content);
-        bool p1 = _posts.FirstOrDefault(x => x.Title == post.Title) == null && _posts.FirstOrDefault(x => x.Content == post.Content) == null ? true : false;
-        if (p1)
+        int lastId = _postCount+1;
+
+        Post post = new(lastId, newPost.Title, newPost.Content);
+        bool powtorka = _posts.FirstOrDefault(x => x.Title == post.Title) == null && _posts.FirstOrDefault(x => x.Content == post.Content) == null ? true : false;
+        if (powtorka)
         {
             var task = client.PostAsJsonAsync(uri,newPost);
             task.Wait();    
 
             if (task.IsCompleted && task.IsCompletedSuccessfully)
             {
+                _postCount += 1;
                 return $"Dodano: {post}";
             }
 

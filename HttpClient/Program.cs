@@ -2,7 +2,7 @@
 record NewPost(string Title, string Content);
 record UpdatePost(int Id, string Content);
 enum Direction { Ascending, Descending }
-enum DirectionBy { Id,Title,Content }
+enum DirectionBy { Id, Title, Content }
 class Program
 {
     public static void Main()
@@ -43,14 +43,14 @@ class Program
             Console.WriteLine("5. Delete");
             Console.WriteLine("6. Exit");
         }
-        
+
         void Start()
         {
             Informacje();
             int n = int.Parse(Console.ReadLine());
             int id;
             string title, content;
-            if(n == 1)
+            if (n == 1)
             {
                 Console.WriteLine("Give sort by...");
                 Console.WriteLine("1. Id");
@@ -58,13 +58,13 @@ class Program
                 Console.WriteLine("3. Content");
                 int n2 = int.Parse(Console.ReadLine());
                 DirectionBy directionBy = DirectionBy.Id;
-                if(n2 == 1)
-                {}
-                else if(n2 == 2)
+                if (n2 == 1)
+                { }
+                else if (n2 == 2)
                 {
                     directionBy = DirectionBy.Title;
                 }
-                else if(n2 == 3)
+                else if (n2 == 3)
                 {
                     directionBy = DirectionBy.Content;
                 }
@@ -72,26 +72,26 @@ class Program
                 Console.WriteLine("Give direction...");
                 Console.WriteLine("1. Ascending");
                 Console.WriteLine("2. Descending");
-                Direction direction = int.Parse(Console.ReadLine()) == 2 ?Direction.Descending:Direction.Ascending;
+                Direction direction = int.Parse(Console.ReadLine()) == 2 ? Direction.Descending : Direction.Ascending;
 
-                Console.WriteLine(Dane.GetAll(direction,directionBy));
+                Console.WriteLine(Dane.GetAll(direction, directionBy));
             }
-            else if(n == 2)
+            else if (n == 2)
             {
                 Console.WriteLine("id: ");
                 id = int.Parse(Console.ReadLine());
                 Console.WriteLine(Dane.GetById(id));
             }
-            else if(n == 3)
+            else if (n == 3)
             {
                 Console.WriteLine("title: ");
                 title = Console.ReadLine();
                 Console.WriteLine("content: ");
                 content = Console.ReadLine();
-                NewPost newPost = new(title,content);
+                NewPost newPost = new(title, content);
                 Console.WriteLine(Dane.Post(newPost));
             }
-            else if(n == 4)
+            else if (n == 4)
             {
                 Console.WriteLine("id: ");
                 id = int.Parse(Console.ReadLine());
@@ -101,7 +101,7 @@ class Program
                 UpdatePost updatePost = new(id, content);
                 Console.WriteLine(Dane.Put(updatePost));
             }
-            else if(n == 5)
+            else if (n == 5)
             {
                 Console.WriteLine("id: ");
                 id = int.Parse(Console.ReadLine());
@@ -114,7 +114,7 @@ class Program
         {
             Start();
         }
-        
+
 
 
     }
