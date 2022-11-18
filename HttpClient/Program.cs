@@ -1,4 +1,6 @@
-﻿record Post(int Id, string Title, string Content);
+﻿using System.Net.Security;
+
+record Post(int Id, string Title, string Content);
 record NewPost(string Title, string Content);
 record UpdatePost(int Id, string Content);
 enum Direction { Ascending, Descending }
@@ -8,6 +10,7 @@ class Program
     public static void Main()
     {
         DaneDto Dane = new();
+
 
 
         //Console.WriteLine(Dane.GetAll());
@@ -74,7 +77,7 @@ class Program
                 Console.WriteLine("2. Descending");
                 Direction direction = int.Parse(Console.ReadLine()) == 2 ? Direction.Descending : Direction.Ascending;
 
-                Console.WriteLine(Dane.GetAll(direction, directionBy));
+                Dane.GetAll(direction, directionBy);
             }
             else if (n == 2)
             {
