@@ -11,30 +11,6 @@ class Program
     {
         DaneDto Dane = new();
 
-
-
-        //Console.WriteLine(Dane.GetAll());
-
-        /* */
-
-        //Console.WriteLine(Dane.GetById(1));
-
-        /* */
-
-        //NewPost newPost = new("Dzien 4", "Ide kupic apteczke");
-        //Console.WriteLine(Dane.Post(newPost));
-        //Console.WriteLine(Dane.GetAll());
-
-        /* */
-
-        //UpdatePost updatePost = new(4, "Poszedlem zakupic apteczke, ale jej nie bylo");
-        //Console.WriteLine(Dane.Put(updatePost));
-
-        /* */
-
-        //Console.WriteLine(Dane.Delete(2));
-        //Console.WriteLine(Dane.GetAll());
-
         bool running = true;
         void Informacje()
         {
@@ -77,7 +53,8 @@ class Program
                 Console.WriteLine("2. Descending");
                 Direction direction = int.Parse(Console.ReadLine()) == 2 ? Direction.Descending : Direction.Ascending;
 
-                Dane.GetAll(direction, directionBy);
+                Console.WriteLine(Dane.GetAll(direction, directionBy));
+
             }
             else if (n == 2)
             {
