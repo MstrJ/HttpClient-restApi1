@@ -1,3 +1,4 @@
-# HttpClient-restApi1
-pobiera dane z restApi1
-projekt jest zależny od projektu https://github.com/MstrJ/restApi1
+<h1>HttpClient - restApi1</h1>
+
+<p>Przedstawia Metody GET POST PUT DELETE w consoli</p>
+<p>Pod Projekt do <a href="https://github.com/MstrJ/restApi1">restAPI Blogger</p>
